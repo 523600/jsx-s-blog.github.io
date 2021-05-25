@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>杂记 | Gridea</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://523600.github.io/jsx-s-blog.github.io//favicon.ico?v=1621926503347">
+<link rel="stylesheet" href="https://523600.github.io/jsx-s-blog.github.io//styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="final
+final 类
+此类不能被继承
+final 方法
+此方法无法被子类覆写，可以重载。
+某些情况下final方法可能会被优化成类似inline内嵌调用。（前期绑定）
+![](D:\ellune\批注 2021-05-22 15404..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://523600.github.io/jsx-s-blog.github.io/">
+        <img src="https://523600.github.io/jsx-s-blog.github.io//images/avatar.png?v=1621926503347" class="site-logo">
+        <h1 class="site-title">Gridea</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://523600.github.io/jsx-s-blog.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">杂记</h2>
+            <div class="post-date">2021-05-25</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="final">final</h1>
+<h3 id="final-类">final 类</h3>
+<p>此类不能被继承</p>
+<h3 id="final-方法">final 方法</h3>
+<p>此方法无法被子类覆写，可以重载。</p>
+<p>某些情况下final方法可能会被优化成类似inline内嵌调用。（前期绑定）</p>
+<p>![](D:\ellune\批注 2021-05-22 154046.png)</p>
+<h3 id="final-成员">final 成员</h3>
+<p><strong>final的是final修饰的引用，而不是引用所指向的对象。</strong></p>
+<pre><code class="language-java">final int a=6;//final的值只能被初始化的时候赋值，初始化之后不能修改。
+final Object b=new Object();
+b=new Object();// 错误 不能指向新的引用
+b.data=99;// 正确 final了对象引用的地址，但对象自身可以改变
+</code></pre>
+<p>当编译器知道final确定的值，且值为基本数据常量时，会执行以下行为：</p>
+<pre><code class="language-java">String s=&quot;6666&quot;;
+
+final String s1=&quot;666&quot;;
+String s2=&quot;666&quot;;
+//在编译时执行计算式
+String a = s1 + 6; //编译时将final修饰的string替换到表达式中去  类似#define的行为
+String b = s2 + 6;
+
+System.out.println((a == s));//true
+System.out.println((b == s));//false
+</code></pre>
+<h1 id="向上转型多态和向下转型">向上转型（多态）和向下转型</h1>
+<p><strong>向上转型/多态：通过实现父类引用指向子类对象，可以实现传入不同的子类对象时执行不同的功能，实现参数统一。</strong></p>
+<p>父类指向子类对象的引用只能实现父类和子类中都有的方法，而子类多出的方法无法使用。</p>
+<p>只有在子类override了父类的方法时，才会显现出这一特性。而重载不会实现多态。</p>
+<p>多态的实现基于java的动态绑定。</p>
+<p>在java中只有被声明为<strong>final（private）和static</strong>的方法（在编译期绑定）才可以避免在运行时绑定（<strong>静态绑定</strong>），这也是final和static方法无法实现多态的原因（static方法可以重写，但父类调用执行的仍然是父类方法，而final无法被重写）</p>
+<p><strong>重写的一个特例</strong></p>
+<pre><code class="language-java">class A{
+    public String data;
+    A(String a){
+        this.data=a;
+        //System.out.println(&quot;A()&quot;);
+    }
+    A(){
+       // System.out.println(&quot;A()&quot;);
+    }
+
+    public void print(String ... arg){
+		System.out.println(&quot;A&quot;);
+    }
+}
+
+final class B extends A{
+    public String data;
+    public B(String data) {
+        super();
+        this.data = data;
+    }
+    @Override
+    public void print(String [] arg){
+        System.out.println(&quot;B&quot;);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        A a = new B();//向上转型
+        B b = new B();//未向上转型
+        a.print(&quot;666&quot;);//执行正确
+        b.print(&quot;666&quot;);//执行错误
+    }
+
+}
+</code></pre>
+<p>在上例中，子类对象b调用其print方法，编译器从子类中找到print方法，但是参数类型不匹配，尽管参数列表不匹配也不会跑到父类再去匹配，找到了就不再向上找了，所以无法执行；</p>
+<p>而对象a做了向上转型，形参列表是由父类决定的，故可以执行。</p>
+<p><strong>这是override的特例，正常情况下子类覆写必须与父类原方法参数列表一致，但此例中可以不一致而@Override注解不会报错。</strong></p>
+<p><strong>向下转型：向上转型会丢失子类的一些信息。向下转型通过父类强制转换为子类,从而来调用子类独有的方法。</strong></p>
+<h1 id="反射rtti">反射(RTTI)</h1>
+<p>Java反射机制可以让我们在编译期(Compile Time)之外的运行期(Runtime)检查类，接口，变量以及方法的信息。反射还可以让我们在运行期实例化对象，调用方法，通过调用get/set方法获取变量的值。</p>
+<pre><code class="language-java">/**
+ * 获取Class对象：
+ * 1.Class.forName(classname)
+ * 2.Type.class
+ * 3.object.getClass()
+ *
+ * 构造反射对象：
+ * 1.Field 成员变量 get
+ * 2.Constructor 构造器 getConstructor(ParamType.class...) 获取构造器
+ * 3.Method 成员方法
+ */
+Class c= Class.forName(&quot;com.company.B&quot;);//Class.forName获取要反射的类名
+
+Constructor con=c.getConstructor(String.class,String.class);//String.class 是String的反射
+Constructor con1=c.getConstructor(String.class);
+Constructor con2=c.getDeclaredConstructor();
+Object b=con.newInstance(&quot;99&quot;,&quot;88&quot;);
+Object b1=con1.newInstance(&quot;99&quot;);
+Object b2=con2.newInstance();//newinstance实例化反射对象
+
+Method method=c.getMethod(&quot;print&quot;,int.class,int.class);//获取对象方法
+method.invoke(b,5,6);//invoke调用
+method.invoke(b1,5,7);
+method.invoke(b2,8,8);
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>常见反射api：</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getClass()</td>
+<td>获取类名</td>
+</tr>
+<tr>
+<td>Class.forName()</td>
+<td>传入类名字符串，返回Class对象</td>
+</tr>
+<tr>
+<td>getField()  /  getFields()</td>
+<td>获取public成员变量</td>
+</tr>
+<tr>
+<td>getDeclaredField() / getDeclaredFields()</td>
+<td>获取所有成员变量</td>
+</tr>
+<tr>
+<td>getConstructor() / getConstructors()</td>
+<td>获取public构造器</td>
+</tr>
+<tr>
+<td>getDeclaredConstructor() /  getDeclaredConstructors()</td>
+<td>获取所有构造器</td>
+</tr>
+<tr>
+<td>newInstance()</td>
+<td>实例化一个反射对象</td>
+</tr>
+<tr>
+<td>getMethod()  /  getMethods()</td>
+<td>获取public方法</td>
+</tr>
+<tr>
+<td>MgetDeclaredMethod(ClassObject)  /  getDeclaredMethods(ClassObject)</td>
+<td>获取所有方法</td>
+</tr>
+<tr>
+<td>Object invoke(Object obj, Object... args)</td>
+<td>执行一个方法,arg为参数</td>
+</tr>
+<tr>
+<td>String getName()</td>
+<td>获取字段名</td>
+</tr>
+<tr>
+<td>public Class<E>[] getParameterTypes()</td>
+<td>参数列表</td>
+</tr>
+</tbody>
+</table>
+<p>(https://zhuanlan.zhihu.com/p/80519709)</p>
+<h1 id="接口与抽象">接口与抽象</h1>
+<h3 id="抽象">抽象</h3>
+<h4 id="抽象类">抽象类</h4>
+<p>抽象类和普通的类唯一区别在于抽象类无法被实例化，无法用来描绘对象，其他方面与普通类行为相同。 必须被继承才能被使用。</p>
+<p>若子类也是抽象类，则需一直被继承直到子类不是抽象类才能被实例化。</p>
+<h4 id="抽象方法">抽象方法</h4>
+<p>声明时只给出方法，不提供具体实现，在子类中进行实现。</p>
+<p><strong>当一个类中含有抽象方法时，该类必须是抽象类，但抽象类可以不含抽象方法。</strong></p>
+<pre><code class="language-java">abstract class A{
+    public String data;
+    A(String a){
+        this.data=a;
+    }
+    A(){
+    }
+    abstract public void print();//抽象方法
+}
+
+abstract class B extends A{
+    public String data;
+    public B(String data) {
+        super();
+        System.out.println( data);
+        this.data = data;
+    }//子类没有实现父类中的抽象方法，所以该类必须为抽象类。
+}
+</code></pre>
+<h3 id="接口">接口</h3>
+<p><strong>极度抽象的类，是抽象方法的集合</strong>。</p>
+<p>所有方法都没有方法体（隐式包含public abstract）。</p>
+<p>所有成员变量隐式指定为 <strong>public static final</strong> 。</p>
+<p><strong>Java8</strong>中提供了新的方式：</p>
+<pre><code class="language-java"> class B implements C{
+    ...
+}//B中没有提供接口C中static和default方法的实现
+
+interface C {
+    static void print1() {
+        System.out.println(&quot;static C&quot;);
+    }//只能通过接口名调用
+    default void print(){
+        System.out.println(&quot;default print&quot;);
+    }//提供一个默认实现，子类实现类可以重写掉此实现。
+}
+
+public class Main {
+    public static void main(String[] args) {
+        B b=new B(&quot;B.data&quot;);
+        C.print1();//输出static C
+        b.print();//输出default print
+    }
+}
+</code></pre>
+<p>默认方法提供了接口演化（interface evolution），可以在旧接口中添加一个<strong>默认方法</strong>，而不至于让其他实现类报错。</p>
+<p>在Java9中，接口函数可以声明为private。</p>
+<h1 id="浅拷贝和深拷贝">浅拷贝和深拷贝</h1>
+<p>java中实现对象的拷贝有两种方法------<strong>赋值运算符</strong>和<strong>实现Cloneable接口</strong>。</p>
+<p>赋值运算符实现的是浅拷贝。</p>
+<p>Cloneable接口是一个标记接口，其内部不含任何方法。</p>
+<p>若只实现了一层的clone方法，实现的依然是浅拷贝。</p>
+<pre><code class="language-java">class Wheel {
+    public int size;
+    public Wheel(int size) {
+        this.size = size;
+    }
+}
+
+class Car implements Cloneable {
+    public Wheel wheel;//含有一个Wheel对象
+    public Car(Wheel wheel) {
+        this.wheel = wheel;
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        // 覆写此方法必须调用super.clone()
+        return super.clone();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Wheel wheel=new Wheel(88);
+        Car car=new Car(wheel);
+        Car car1=(Car)car.clone(); //仅在car中实现clone，实现了对象的深拷贝，但car对象的wheel成员没有被拷贝，还是和之前共享地址。
+        System.out.println(car1.wheel.size);//88
+        car1.wheel.size=99;
+        System.out.println(car.wheel.size);//99
+    }
+}
+</code></pre>
+<p>只有将类中含有的所有类都实现clone方法，才能进行彻底的深拷贝。</p>
+<p>每一层的每个对象都进行浅拷贝——————深拷贝。</p>
+<pre><code class="language-java">class Wheel implements Cloneable{
+    public int size;
+    public Wheel(int size) {
+        this.size = size;
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }//每个类中都实现了clone方法
+}
+
+class Car implements Cloneable {
+    public Wheel wheel;
+    public Car(Wheel wheel) {
+        this.wheel = wheel;
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Car car= (Car) super.clone();
+        car.wheel=(Wheel)wheel.clone();
+        return car;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Wheel wheel=new Wheel(88);
+        Car car=new Car(wheel);
+        Car car1= (Car) car.clone();//实现了彻底的深拷贝
+        System.out.println(car1.wheel.size);//88
+        car1.wheel.size=99;
+        System.out.println(car.wheel.size);//88
+    }
+}
+</code></pre>
+<p><strong>实现对象序列化也可实现对象的深拷贝。</strong></p>
+<h1 id="参数传递">参数传递</h1>
+<p>Java中没有真正的引用传递 只有值传递。</p>
+<p>本质上是对象的浅拷贝。</p>
+<pre><code class="language-java">private static void test1( A a){//传入实参地址的copy    A b=new A(&quot;B&quot;);    a=b;// 改变了传入参数的地址，a指向b，所以对原地址存有的对象没有进行修改，无法改变值。    ...//后续操作对main中的a无效}private static void test2( A a){//传入实参地址的copy     A b=new A(&quot;B&quot;);    a.data=b.data;// a的地址没有被修改,直接在此地址上进行修改，改变了main中a的值}public static void main(String[] args) {    A a = new A();    a.data = &quot;main A.data&quot;;    test1(a);}
+</code></pre>
+<h1 id="泛型">泛型</h1>
+<h4 id="泛型类">泛型类</h4>
+<pre><code class="language-java">class T &lt;E&gt; {    static private int index=0;    private E[] data;        public E get(int i){        return data[i];    }    public void add(E i){        data[index++]=i;    }    public T() {        this.data = (E[]) new Object[10000];    }}
+</code></pre>
+<h4 id="泛型方法">泛型方法</h4>
+<pre><code class="language-java">public static &lt;T extends Comparable &amp; Cloneable &gt; T func(T ... a){  //用extends限定T的类型    return a[a.length/2];}
+</code></pre>
+<h4 id="类型擦除">类型擦除</h4>
+<p>虚拟机中没有泛型，只有普通的类和方法。java虚拟机在编译期会将类型参数替换为相应的类型。这点与c++的template不同。</p>
+<p>T<A> 和T<B> 在java编译后都转化为T ，c++对于每个实例化产生不同的类型。</p>
+<p><strong>不能创建一个确切的泛型类型的数组，因为擦除会使该数组中每一个元素都是相同的泛型类型，而失去了菱形运算符中原有的类型，运行时虚拟机中没有泛型信息，在进行数据转换时将导致一个类型错误。</strong></p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://523600.github.io/jsx-s-blog.github.io/post/hello-gridea/">
+                  <h3 class="post-title">
+                    Hello Gridea
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
