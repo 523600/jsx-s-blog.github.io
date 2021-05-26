@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gridea</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <link rel="stylesheet" href="media/css/post.css">
+    <link rel="stylesheet" href="media/live2d/css/live2d.css" />
+    
+</head>
+<body class=" mdui-appbar-with-toolbar  mdui-theme-primary-pink mdui-theme-accent-pink">
+<header class="mdui-toolbar mdui-color-pink mdui-appbar-fixed mdui-appbar-scroll-toolbar-hide" style="z-index: 1000">
+    <a href="javascript:;" mdui-drawer="{target: '#left-drawer',overlay:true}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+    <span class="mdui-typo-title">Gridea</span>
+    <div class="mdui-toolbar-spacer"></div>
+<!--    <a href="javascript:history.go(0);" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+</header>
+
+<div class="mdui-drawer mdui-color-white mdui-drawer-full-height mdui-drawer-close" id="left-drawer">
+    <ul class="mdui-list">
+        <li class="mdui-subheader">菜单</li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/" class="mdui-list-item-content">首页</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/archives" class="mdui-list-item-content">归档</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/tags" class="mdui-list-item-content">标签</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/post/about" class="mdui-list-item-content">关于</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div id="content" class="site-content">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+            <article id="post-1270" class="post-1270 post type-post status-publish format-standard hentry category-90 category-129 tag-149">
+                <header class="entry-header">
+                    <h1 class="entry-title">计算机网络</h1>
+                    <p class="entry-census">发布于 2021-05-26</p>
+                    <hr>
+                </header>
+                <div class="neko">
+                    <h2 id="传输层服务">传输层服务</h2>
+<p>​	为运行在不同host之间的应用提供通信。将两个端系统的IP交付服务拓展为端系统进程上的交付服务。依赖于网络层服务，对网络层服务进行加强。</p>
+<p>​	运行在传输层上的数据被称为报文段(segment)。</p>
+<h3 id="多路复用">多路复用</h3>
+<p>传输层将上层不同进程socket传来的数据封装成报文段传送给网络层发送。</p>
+<h3 id="多路分解">多路分解</h3>
+<p>接收方接受报文段，根据所带的元组（唯一标识）分解给不同的socket：UDP socket或TCP socket。</p>
+<p>![](D:\ellune\blog\img\批注 2021-05-25 161122.png)</p>
+<h2 id="udp">UDP</h2>
+<p>基于不可靠的IP协议之上的不可靠传输。对IP协议的简单加强。</p>
+<p>提供了：</p>
+<p>​	不可靠、无序的数据传输</p>
+<p>​	简单的差错检测。</p>
+<p>与TCP相比：</p>
+<p>​	不需要建立连接。因而也不需要维持连接。</p>
+<p>​	没有拥塞控制，应用层可以更好地调节速率。</p>
+<p>​	头部开销少。TCP  20字节，UDP  8字节。</p>
+<p>报文段结构：</p>
+<figure data-type="image" tabindex="1"><img src="https://523600.github.io/jsx-s-blog.github.io//post-images/1622025610225.png" alt="" loading="lazy"></figure>
+<h2 id="tcp">TCP</h2>
+<h2 id="滑动窗口协议">滑动窗口协议</h2>
+<p>发送方和接收方维护两个窗口。</p>
+<p>窗口由已发送未确认和未发送报文段构成。当丢包时，丢失分组ack没有收到，发送方会一直等待窗口base的ack，在超时时，执行重传。当收到ack时，窗口向前移动到序号最小的未确认分组处，同时顺便发送那些窗口内的未发送分组。</p>
+<p>窗口大小必须小于分组数量的一半。</p>
+<p>当发送窗口和接收窗口的大小固定为1时，滑动窗口协议退化为停等协议。</p>
+<figure data-type="image" tabindex="2"><img src="D:%5Cellune%5Cblog%5Cimg%5C1629488-20190622120408388-1447718459.png" alt="" loading="lazy"></figure>
+<img src="D:\ellune\blog\img\批注 2021-05-26 181847.png" style="zoom: 67%;" />
+<h2 id="流量控制">流量控制</h2>
+<p>TCP在接收方缓冲区维护一个<strong>接收窗口</strong>rwnd，在全双工服务中，每次返回数据都将rwnd放在报文段中。</p>
+<p>当接收窗口为零时，接收方不再接受数据，此时发送方每次发送1比特，当rwnd有空余时继续发送信息。</p>
+<img src="D:\ellune\blog\img\QQ图片20210526122336.jpg" style="zoom:50%;" />
+<p>UDP不提供流量控制，在接收方缓冲区满的时候会溢出，丢失数据。</p>
+<h2 id="连接的建立和关闭">连接的建立和关闭</h2>
+<h4 id="三次握手-建立连接">三次握手-----建立连接</h4>
+<p>发送SYN请求的一方是客户端，接收方是服务端。</p>
+<p>在服务端第一次收到SYN请求时，为TCP连接分配资源。</p>
+<img src="D:\ellune\blog\img\QQ图片.jpg" style="zoom: 33%;" />
+<h4 id="四次挥手-关闭连接">四次挥手-----关闭连接</h4>
+<p>TCP是全双工连接，客户端和服务端都要关闭一次连接。在收到FIN后，服务端依然可以发送数据。</p>
+<p>故四次挥手将三次握手中的第二步拆成两步，ACK和FIN不同时发送。</p>
+<img src="D:\ellune\blog\img\QQ图片20210526133327.jpg" style="zoom:33%;" />
+<p>​                                                                              三次握手和四次挥手 ![三次握手和四次挥手](D:\ellune\blog\img\批注 2021-05-26 085526.png)</p>
+<h2 id="拥塞控制">拥塞控制</h2>
+<p>若接收缓存无限制，TCP传输速度将达到平均分配。 当接收缓存有限时，会有一部分数据因缓存溢出丢失或者发生超时而重传，传输速度中应当包含那些重传的数据。</p>
+<figure data-type="image" tabindex="3"><img src="D:%5Cellune%5Cblog%5Cimg%5C20190731190238241.png" alt="" loading="lazy"></figure>
+<p>带宽是有限的，发送方通过调节cwnd的值去控制传输速度。</p>
+<img src="D:\ellune\blog\img\批注 2021-05-26 143420.png" style="zoom: 50%;" />
+<p>当超时或发生包括首个正确的ACK在内的连续4个ACK时，发送方判断发生拥塞，此时执行拥塞控制。</p>
+<p>最开始设置一个慢启动阈值。当cwnd小于阈值时，执行慢启动，当cwnd大于阈值时，执行拥塞避免。</p>
+<h5 id="慢启动">慢启动</h5>
+<p>当发送一个报文段并得到确认后，每有一个确认报文段将对cwnd增加一个MSS，cwnd以指数形式增长，不断试探安全传输数据的极限。</p>
+<h5 id="拥塞避免">拥塞避免</h5>
+<p>cwnd达到阈值之后，cwnd以线性速度增长。</p>
+<h5 id="拥塞发生">拥塞发生</h5>
+<p>阈值降为当前cwnd的一半。</p>
+<p>当ack超时时，cwnd降为1。</p>
+<p>有时数据丢失但未发生拥塞。此时执行快速恢复：当收到冗余ACK时，cwnd降为之前的一半，以线性速度恢复。</p>
+<figure data-type="image" tabindex="4"><img src="D:%5Cellune%5Cblog%5Cimg%5C20190731184640178.png" alt="" loading="lazy"></figure>
+
+                </div>
+            </article>
+        </main>
+    </div>
+    <div class="doc-footer-nav mdui-color-theme">
+        <div class="mdui-container">
+            <div class="mdui-row">
+                
+                <div class="mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left"></div>
+                
+                
+                <a href="https://523600.github.io/jsx-s-blog.github.io/post/za-ji/" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
+                    <div class="doc-footer-nav-text">
+                        <i class="mdui-icon material-icons">arrow_forward</i>
+                        <span class="doc-footer-nav-direction">下一篇文章</span>
+                        <div class="doc-footer-nav-chapter">杂记</div>
+                    </div>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+    <br>
+    
+    <div class="comment"></div>
+</div>
+<footer class="mdui-container footer ">
+    <div class="head_card-offset"></div>
+    <div class="mdui-row mdui-row-gapless">
+        <div class="k-container">
+            <img width="100%" src="/media/img/skirt.png">
+        </div>
+    </div>
+
+    <div class="site-info">
+        Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+    </div>
+</footer>
+<div id="landlord" style="left:5px;bottom:0px;">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="500" height="560" class="live2d"></canvas>
+    <div class="live_talk_input_body">
+        <div class="live_talk_input_name_body">
+            <input name="name" type="text" class="live_talk_name white_input" id="AIuserName" autocomplete="off" placeholder="你的名字" />
+        </div>
+        <div class="live_talk_input_text_body">
+            <input name="talk" type="text" class="live_talk_talk white_input" id="AIuserText" autocomplete="off" placeholder="要和我聊什么呀？"/>
+            <button type="button" class="live_talk_send_btn" id="talk_send">发送</button>
+        </div>
+    </div>
+    <input name="live_talk" id="live_talk" value="1" type="hidden" />
+    <div class="live_ico_box">
+        <div class="live_ico_item type_info" id="showInfoBtn"></div>
+        <div class="live_ico_item type_talk" id="showTalkBtn"></div>
+        <div class="live_ico_item type_music" id="musicButton"></div>
+        <div class="live_ico_item type_youdu" id="youduButton"></div>
+        <div class="live_ico_item type_quit" id="hideButton"></div>
+        <input name="live_statu_val" id="live_statu_val" value="0" type="hidden" />
+        <audio src="" style="display:none;" id="live2d_bgm" data-bgm="0" preload="none"></audio>
+        <input name="live2dBGM" value="https://img.apa70.com/123.mp3" type="hidden">
+        <input name="live2dBGM" value="https://img.apa70.com/123.mp3" type="hidden">
+        <input id="duType" value="douqilai,l2d_caihong" type="hidden">
+    </div>
+</div>
+<div id="open_live2d">召唤伊斯特瓦尔</div>
+<script>
+    var message_Path = '/media/live2d/';//资源目录，如果目录不对请更改
+    var talkAPI = "";//如果有类似图灵机器人的聊天接口请填写接口路径
+</script>
+<!--<script src="/media/js/jquery-3.3.1.min.js"></script>-->
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/media/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/media/live2d/js/message.js"></script>
+
+</body>
+<script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    $('.comment').bind('DOMNodeInserted',()=>{
+        $('.comment').unbind()
+
+        $('.vbtn').addClass(' mdui-btn mdui-color-theme-accent mdui-ripple')
+    })
+
+    let valine = new Valine({
+        el: '.comment',
+        
+        
+        
+        path: window.location.pathname,
+        pageSize: 30,
+        avatar:'mm',
+        notify:true
+    })
+</script>
+</html>

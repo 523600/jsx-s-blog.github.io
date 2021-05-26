@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://523600.github.io/jsx-s-blog.github.io/</id>
     <title>Gridea</title>
-    <updated>2021-05-25T07:08:57.951Z</updated>
+    <updated>2021-05-26T10:40:30.719Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://523600.github.io/jsx-s-blog.github.io/"/>
     <link rel="self" href="https://523600.github.io/jsx-s-blog.github.io/atom.xml"/>
@@ -10,6 +10,72 @@
     <logo>https://523600.github.io/jsx-s-blog.github.io/images/avatar.png</logo>
     <icon>https://523600.github.io/jsx-s-blog.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[计算机网络]]></title>
+        <id>https://523600.github.io/jsx-s-blog.github.io/post/ji-suan-ji-wang-luo/</id>
+        <link href="https://523600.github.io/jsx-s-blog.github.io/post/ji-suan-ji-wang-luo/">
+        </link>
+        <updated>2021-05-26T10:37:26.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="传输层服务">传输层服务</h2>
+<p>​	为运行在不同host之间的应用提供通信。将两个端系统的IP交付服务拓展为端系统进程上的交付服务。依赖于网络层服务，对网络层服务进行加强。</p>
+<p>​	运行在传输层上的数据被称为报文段(segment)。</p>
+<h3 id="多路复用">多路复用</h3>
+<p>传输层将上层不同进程socket传来的数据封装成报文段传送给网络层发送。</p>
+<h3 id="多路分解">多路分解</h3>
+<p>接收方接受报文段，根据所带的元组（唯一标识）分解给不同的socket：UDP socket或TCP socket。</p>
+<p>![](D:\ellune\blog\img\批注 2021-05-25 161122.png)</p>
+<h2 id="udp">UDP</h2>
+<p>基于不可靠的IP协议之上的不可靠传输。对IP协议的简单加强。</p>
+<p>提供了：</p>
+<p>​	不可靠、无序的数据传输</p>
+<p>​	简单的差错检测。</p>
+<p>与TCP相比：</p>
+<p>​	不需要建立连接。因而也不需要维持连接。</p>
+<p>​	没有拥塞控制，应用层可以更好地调节速率。</p>
+<p>​	头部开销少。TCP  20字节，UDP  8字节。</p>
+<p>报文段结构：</p>
+<figure data-type="image" tabindex="1"><img src="https://523600.github.io/jsx-s-blog.github.io//post-images/1622025610225.png" alt="" loading="lazy"></figure>
+<h2 id="tcp">TCP</h2>
+<h2 id="滑动窗口协议">滑动窗口协议</h2>
+<p>发送方和接收方维护两个窗口。</p>
+<p>窗口由已发送未确认和未发送报文段构成。当丢包时，丢失分组ack没有收到，发送方会一直等待窗口base的ack，在超时时，执行重传。当收到ack时，窗口向前移动到序号最小的未确认分组处，同时顺便发送那些窗口内的未发送分组。</p>
+<p>窗口大小必须小于分组数量的一半。</p>
+<p>当发送窗口和接收窗口的大小固定为1时，滑动窗口协议退化为停等协议。</p>
+<figure data-type="image" tabindex="2"><img src="D:%5Cellune%5Cblog%5Cimg%5C1629488-20190622120408388-1447718459.png" alt="" loading="lazy"></figure>
+<img src="D:\ellune\blog\img\批注 2021-05-26 181847.png" style="zoom: 67%;" />
+<h2 id="流量控制">流量控制</h2>
+<p>TCP在接收方缓冲区维护一个<strong>接收窗口</strong>rwnd，在全双工服务中，每次返回数据都将rwnd放在报文段中。</p>
+<p>当接收窗口为零时，接收方不再接受数据，此时发送方每次发送1比特，当rwnd有空余时继续发送信息。</p>
+<img src="D:\ellune\blog\img\QQ图片20210526122336.jpg" style="zoom:50%;" />
+<p>UDP不提供流量控制，在接收方缓冲区满的时候会溢出，丢失数据。</p>
+<h2 id="连接的建立和关闭">连接的建立和关闭</h2>
+<h4 id="三次握手-建立连接">三次握手-----建立连接</h4>
+<p>发送SYN请求的一方是客户端，接收方是服务端。</p>
+<p>在服务端第一次收到SYN请求时，为TCP连接分配资源。</p>
+<img src="D:\ellune\blog\img\QQ图片.jpg" style="zoom: 33%;" />
+<h4 id="四次挥手-关闭连接">四次挥手-----关闭连接</h4>
+<p>TCP是全双工连接，客户端和服务端都要关闭一次连接。在收到FIN后，服务端依然可以发送数据。</p>
+<p>故四次挥手将三次握手中的第二步拆成两步，ACK和FIN不同时发送。</p>
+<img src="D:\ellune\blog\img\QQ图片20210526133327.jpg" style="zoom:33%;" />
+<p>​                                                                              三次握手和四次挥手 ![三次握手和四次挥手](D:\ellune\blog\img\批注 2021-05-26 085526.png)</p>
+<h2 id="拥塞控制">拥塞控制</h2>
+<p>若接收缓存无限制，TCP传输速度将达到平均分配。 当接收缓存有限时，会有一部分数据因缓存溢出丢失或者发生超时而重传，传输速度中应当包含那些重传的数据。</p>
+<figure data-type="image" tabindex="3"><img src="D:%5Cellune%5Cblog%5Cimg%5C20190731190238241.png" alt="" loading="lazy"></figure>
+<p>带宽是有限的，发送方通过调节cwnd的值去控制传输速度。</p>
+<img src="D:\ellune\blog\img\批注 2021-05-26 143420.png" style="zoom: 50%;" />
+<p>当超时或发生包括首个正确的ACK在内的连续4个ACK时，发送方判断发生拥塞，此时执行拥塞控制。</p>
+<p>最开始设置一个慢启动阈值。当cwnd小于阈值时，执行慢启动，当cwnd大于阈值时，执行拥塞避免。</p>
+<h5 id="慢启动">慢启动</h5>
+<p>当发送一个报文段并得到确认后，每有一个确认报文段将对cwnd增加一个MSS，cwnd以指数形式增长，不断试探安全传输数据的极限。</p>
+<h5 id="拥塞避免">拥塞避免</h5>
+<p>cwnd达到阈值之后，cwnd以线性速度增长。</p>
+<h5 id="拥塞发生">拥塞发生</h5>
+<p>阈值降为当前cwnd的一半。</p>
+<p>当ack超时时，cwnd降为1。</p>
+<p>有时数据丢失但未发生拥塞。此时执行快速恢复：当收到冗余ACK时，cwnd降为之前的一半，以线性速度恢复。</p>
+<figure data-type="image" tabindex="4"><img src="D:%5Cellune%5Cblog%5Cimg%5C20190731184640178.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[杂记]]></title>
         <id>https://523600.github.io/jsx-s-blog.github.io/post/za-ji/</id>
@@ -319,38 +385,6 @@ public class Main {
 <p>虚拟机中没有泛型，只有普通的类和方法。java虚拟机在编译期会将类型参数替换为相应的类型。这点与c++的template不同。</p>
 <p>T<A> 和T<B> 在java编译后都转化为T ，c++对于每个实例化产生不同的类型。</p>
 <p><strong>不能创建一个确切的泛型类型的数组，因为擦除会使该数组中每一个元素都是相同的泛型类型，而失去了菱形运算符中原有的类型，运行时虚拟机中没有泛型信息，在进行数据转换时将导致一个类型错误。</strong></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://523600.github.io/jsx-s-blog.github.io/post/hello-gridea/</id>
-        <link href="https://523600.github.io/jsx-s-blog.github.io/post/hello-gridea/">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
 ]]></content>
     </entry>
 </feed>
